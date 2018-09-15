@@ -2,7 +2,7 @@
 
 # JS-Carousel
 
-Vanilla JS carousel for the web.
+Vanilla JS carousel for the web. [See demo](https://aprilmintacpineda.github.io/js-carousel/).
 
 ---
 
