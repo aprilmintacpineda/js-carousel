@@ -9,8 +9,18 @@ function jscarousel (CarouselContainer, config) {
     ItemsWrapper.style.transform = `translateX(-${currentPage * containerWidth}px)`;
   }
 
+  function simulateInfiniteScroll (resetPage) {
+    setTimeout(function resetCarousel () {
+      isPlaying = false;
+      currentPage = resetPage;
+      // disable animation
+      ItemsWrapper.style.transition = '';
+      navigateToNextItem();
+    }, config.animationSpeed + 10);
+  }
+
   function playCarousel () {
-    playTimeout = setTimeout(function tick () {
+    carouselPlayer = setTimeout(function tick () {
       if (!isPlaying) {
         isPlaying = true;
         var shouldReset = false;
@@ -39,13 +49,7 @@ function jscarousel (CarouselContainer, config) {
         navigateToNextItem();
 
         if (shouldReset) {
-          setTimeout(function resetCarousel () {
-            isPlaying = false;
-            currentPage = 1;
-            // disable animation
-            ItemsWrapper.style.transition = '';
-            navigateToNextItem();
-          }, config.animationSpeed + 10);
+          simulateInfiniteScroll(1);
         } else {
           isPlaying = false;
         }
@@ -55,13 +59,91 @@ function jscarousel (CarouselContainer, config) {
     }, config.itemDuration);
   }
 
-  // setup
+  function swipeMove (ev) {
+    ItemsWrapper.style.webkitTransform = `translateX(-${currentPage * containerWidth +
+      (swipeStartXPosition - ev.x)}px)`;
+    ItemsWrapper.style.MozTransform = `translateX(-${currentPage * containerWidth +
+      (swipeStartXPosition - ev.x)}px)`;
+    ItemsWrapper.style.msTransform = `translateX(-${currentPage * containerWidth +
+      (swipeStartXPosition - ev.x)}px)`;
+    ItemsWrapper.style.OTransform = `translateX(-${currentPage * containerWidth +
+      (swipeStartXPosition - ev.x)}px)`;
+    ItemsWrapper.style.transform = `translateX(-${currentPage * containerWidth +
+      (swipeStartXPosition - ev.x)}px)`;
+  }
+
+  function swipeEnd (ev) {
+    // enable animation
+    ItemsWrapper.style.transition = `transform ${config.animationSpeed}ms`;
+
+    lastPage = currentPage;
+
+    if (ev.x > swipeStartXPosition) {
+      currentPage = currentPage - 1;
+    } else {
+      currentPage = currentPage + 1;
+    }
+
+    navigateToNextItem();
+
+    console.log(currentPage, lastPage);
+
+    if (currentPage === maxPage + 1) {
+      PagesContainer.children[0].style.backgroundColor = '#4ecbf4';
+      PagesContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
+      simulateInfiniteScroll(1);
+    } else if (currentPage === 0) {
+      PagesContainer.children[maxPage - 1].style.backgroundColor = '#4ecbf4';
+      PagesContainer.children[0].style.backgroundColor = '#1a84a8';
+      simulateInfiniteScroll(maxPage);
+    } else {
+      PagesContainer.children[currentPage - 1].style.backgroundColor = '#4ecbf4';
+      PagesContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
+    }
+
+    // cleaning listeners after execution
+    ItemsWrapper.removeEventListener('mousemove', swipeMove);
+    ItemsWrapper.removeEventListener('mouseout', swipeEnd);
+
+    ItemsWrapper.removeEventListener('touchcancel', swipeMove);
+    ItemsWrapper.removeEventListener('touchend', swipeEnd);
+
+    isPlaying = false;
+    playCarousel();
+  }
+
+  function swipeStart (ev) {
+    if (!isPlaying) {
+      clearTimeout(carouselPlayer);
+
+      isPlaying = true;
+      swipeStartXPosition = ev.x;
+
+      ItemsWrapper.style.transition = '';
+
+      ItemsWrapper.addEventListener('mousemove', swipeMove);
+      ItemsWrapper.addEventListener('mouseup', swipeEnd);
+      ItemsWrapper.addEventListener('mouseout', swipeEnd);
+
+      ItemsWrapper.addEventListener('touchcancel', swipeMove);
+      ItemsWrapper.addEventListener('touchend', swipeEnd);
+    }
+  }
+
+  function preventDrag (ev) {
+    ev.preventDefault();
+  }
+
+  // computation
   var currentPage = 1;
   var lastPage = 0;
   var maxPage = CarouselContainer.children.length;
   var containerWidth = CarouselContainer.clientWidth;
+  // autoplay
   var isPlaying = false;
-  var playTimeout = false;
+  var carouselPlayer = false;
+  // swipe
+  var swipeStartXPosition = false;
 
   var carouselItemStyles = `
     width: 100%;
@@ -103,7 +185,6 @@ function jscarousel (CarouselContainer, config) {
 
   for (var a = 0; a < maxPage; a++) {
     CarouselContainer.children[a].style = carouselItemStyles;
-
     ItemsWrapper.appendChild(CarouselContainer.children[a].cloneNode(true));
 
     // might as well create pagination elements now
@@ -113,7 +194,7 @@ function jscarousel (CarouselContainer, config) {
 
     Page.onclick = function goToPage (ev) {
       if (!isPlaying) {
-        clearTimeout(playTimeout);
+        clearTimeout(carouselPlayer);
         isPlaying = true;
         lastPage = currentPage;
 
@@ -126,6 +207,9 @@ function jscarousel (CarouselContainer, config) {
 
         PagesContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
         PagesContainer.children[currentPage - 1].style.backgroundColor = '#4ecbf4';
+
+        // enable animation
+        ItemsWrapper.style.transition = `transform ${config.animationSpeed}ms`;
 
         navigateToNextItem();
         isPlaying = false;
@@ -146,6 +230,12 @@ function jscarousel (CarouselContainer, config) {
   // initially go to the first item
   PagesContainer.children[0].style.backgroundColor = '#4ecbf4';
   navigateToNextItem();
+
+  // add listeners
+  ItemsWrapper.addEventListener('mousedown', swipeStart);
+  ItemsWrapper.addEventListener('touchstart', swipeStart);
+  ItemsWrapper.addEventListener('dragstart', preventDrag);
+
   playCarousel();
 }
 
