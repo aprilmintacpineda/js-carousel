@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>JS-Carousel</title>
+  <script src="../src/index.js"></script>
+</head>
+
+<body>
+  <div id="carousel-container">
+    <img src="https://www.anime-evo.net/wp-content/uploads/2015/10/One-Punch-Man-01-03.jpg">
+    <img src="http://mangalerie.fr/wp-content/uploads/2016/01/Saitama_OK.jpg">
+    <img src="https://twosensei.files.wordpress.com/2015/10/one-punch-man-02-1080p-mkv_00005.png">
+    <img src="https://otakukart.com/animeblog/wp-content/uploads/2016/07/One-Punch-Man-05-Large-03.jpg">
+  </div>
+
+  <script>
+    jscarousel(document.getElementById('carousel-container'), {
+      animationSpeed: 500,
+      itemDuration: 1500
+    });
+  </script>
+</body>
+
+</html>

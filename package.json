@@ -1,0 +1,41 @@
+{
+  "name": "js-carousel",
+  "version": "1.0.0",
+  "description": "Vanilla JS carousel for the web.",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ],
+    "*.html": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gh_personal:aprilmintacpineda/js-carousel.git"
+  },
+  "keywords": [
+    "vanilla-javascript",
+    "vanilla-js",
+    "carousel-plugin",
+    "carousel-slider",
+    "slick-carousel",
+    "carousel"
+  ],
+  "author": "April Mintac Pineda",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-eslint": "^9.0.0",
+    "eslint": "^5.6.0",
+    "lint-staged": "^7.2.2",
+    "prettier": "^1.14.2"
+  }
+}
