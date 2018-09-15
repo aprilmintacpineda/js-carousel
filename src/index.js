@@ -249,6 +249,15 @@ function jscarousel (CarouselContainer, config) {
   PagesContainer.children[0].style.backgroundColor = '#4ecbf4';
   navigateToNextItem();
   playCarousel();
+
+  window.addEventListener('resize', function () {
+    clearTimeout(carouselPlayer);
+    isPlaying = true;
+    containerWidth = CarouselContainer.clientWidth;
+    navigateToNextItem();
+    isPlaying = false;
+    playCarousel();
+  });
 }
 
 window.jscarousel = jscarousel;
