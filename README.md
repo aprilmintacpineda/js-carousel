@@ -102,4 +102,4 @@ class myComponent extends Component {
 }
 ```
 
-Or you can use [react-carousel](https://github.com/aprilmintacpineda/react-carousel) or [inferno-carousel](https://github.com/aprilmintacpineda/inferno-carousel).
+Or you can use [react-js-carousel](https://github.com/aprilmintacpineda/react-js-carousel) or [inferno-carousel](https://github.com/aprilmintacpineda/inferno-carousel).
