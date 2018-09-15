@@ -17,7 +17,7 @@ The carousel supports swipes to navigate around.
 Add the following inside the head tag
 
 ```html
-<script src="https://www.unpkg.com/js-carousel@1.0.1/lib/index.min.js"></script>
+<script src="https://www.unpkg.com/js-carousel@latest/lib/index.min.js"></script>
 ```
 
 ```html
