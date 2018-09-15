@@ -6,22 +6,236 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>1.0.0</title>
-  <script src="../src/index.js"></script>
+  <script src="../lib/index.min.js"></script>
+  <style>
+    .image-carousel img {
+      height: 400px;
+    }
+
+    .small-carousel {
+      width: 400px;
+    }
+
+    .small-carousel img {
+      height: 400px;
+    }
+
+    .image-text-carousel {
+      width: 500px;
+    }
+
+    .image-text-carousel img {
+      height: 400px;
+      width: 400px
+    }
+
+    .text-beside-image-carousel {
+      width: 100%;
+    }
+
+    .text-beside-image-carousel img {
+      height: 400px;
+      width: 40%;
+      float: left;
+      margin-right: 10px;
+    }
+
+    .text-beside-image-carousel>div:after {
+      display: block;
+      content: '';
+      clear: both;
+    }
+
+    .carousel-beside-text {
+      float: left;
+      width: 400px;
+      margin-right: 10px;
+    }
+
+    .carousel-beside-text img {
+      height: 400px;
+    }
+
+    .carousel-beside-text-container:after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+  </style>
 </head>
 
 <body>
-  <div id="carousel-container">
+  <h1>Note</h1>
+  <p>I do not own any of the images I used in this demo. These are random images I picked from websites.</p>
+  <p>Also note that these images are not of the same size and aspect ratio.</p>
+
+  <hr>
+
+  <h1>Full width Carousel with images inside.</h1>
+
+  <div class="image-carousel carousel-container">
     <img src="https://www.anime-evo.net/wp-content/uploads/2015/10/One-Punch-Man-01-03.jpg">
     <img src="http://mangalerie.fr/wp-content/uploads/2016/01/Saitama_OK.jpg">
     <img src="https://twosensei.files.wordpress.com/2015/10/one-punch-man-02-1080p-mkv_00005.png">
     <img src="https://otakukart.com/animeblog/wp-content/uploads/2016/07/One-Punch-Man-05-Large-03.jpg">
   </div>
 
+  <hr>
+
+  <h1>Small carousel with images inside.</h1>
+
+  <div class="small-carousel carousel-container">
+    <img src="https://www.anime-evo.net/wp-content/uploads/2015/10/One-Punch-Man-01-03.jpg">
+    <img src="http://mangalerie.fr/wp-content/uploads/2016/01/Saitama_OK.jpg">
+    <img src="https://twosensei.files.wordpress.com/2015/10/one-punch-man-02-1080p-mkv_00005.png">
+    <img src="https://otakukart.com/animeblog/wp-content/uploads/2016/07/One-Punch-Man-05-Large-03.jpg">
+  </div>
+
+  <hr>
+
+  <h1>Carousel with images and texts inside.</h1>
+
+  <div class="image-text-carousel carousel-container">
+    <div>
+      <img src="https://www.anime-evo.net/wp-content/uploads/2015/10/One-Punch-Man-01-03.jpg">
+      <p>Sed nec diam eget quam dictum bibendum et et dui. Donec mattis erat at tempus tincidunt. Vestibulum ante ipsum
+        primis in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus in augue volutpat, mollis nulla
+        vitae, luctus sapien. Donec pellentesque augue nec imperdiet tempor. Quisque aliquam scelerisque quam a
+        condimentum. Mauris placerat tortor at nulla molestie, vel vulputate nisl mollis. Nam id risus eget diam tempor
+        interdum.</p>
+    </div>
+    <div>
+      <img src="http://mangalerie.fr/wp-content/uploads/2016/01/Saitama_OK.jpg">
+      <p>Integer sed mauris fermentum, porttitor metus vehicula, sodales nulla. Praesent mattis neque non orci vehicula
+        ullamcorper. Integer cursus orci nisi, nec feugiat justo sodales at. Etiam eget ultricies dui. Morbi at
+        pellentesque justo. Proin ornare velit a purus elementum, vitae egestas urna accumsan. Suspendisse cursus eget
+        odio vitae sodales. Morbi laoreet tortor in tellus dictum, vitae porttitor lectus bibendum. Sed ligula lacus,
+        semper sit amet neque eget, vehicula luctus lacus. Phasellus hendrerit vel massa ut dapibus. Interdum et
+        malesuada fames ac ante ipsum primis in faucibus. Mauris rhoncus magna blandit felis gravida, in pellentesque
+        enim fermentum. Pellentesque non justo leo. Nunc ornare nisl in dignissim dictum. Phasellus aliquam nisi eget
+        semper pulvinar. Vivamus nec cursus mauris, vel lacinia leo.</p>
+    </div>
+    <div>
+      <img src="https://twosensei.files.wordpress.com/2015/10/one-punch-man-02-1080p-mkv_00005.png">
+      <p>Aenean tempus ligula vitae euismod scelerisque. Fusce tempor tempus justo, eget facilisis est euismod vel.
+        Nulla sed posuere arcu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nulla a finibus arcu. Sed
+        blandit vehicula urna at iaculis. Sed ultrices mattis fermentum. Donec in quam a turpis egestas ultricies.
+        Fusce leo mi, aliquam ac malesuada ut, placerat ac tortor. Nulla sed ultrices diam. Morbi at molestie sem.
+        Pellentesque orci justo, congue sit amet neque nec, vulputate vulputate orci.</p>
+    </div>
+    <div>
+      <img src="https://otakukart.com/animeblog/wp-content/uploads/2016/07/One-Punch-Man-05-Large-03.jpg">
+      <p>Donec vehicula sodales volutpat. Duis sit amet arcu vitae diam hendrerit dapibus. Nam nibh lorem, cursus in
+        lacus a, tincidunt tempus ligula. Cras ac dolor lobortis neque tincidunt tempus. Curabitur viverra consequat
+        quam sit amet ultricies. Nulla fringilla eget metus in semper. Curabitur auctor facilisis gravida. Aliquam
+        elementum, felis pulvinar lacinia mollis, sapien justo hendrerit ligula, vel eleifend magna ante a dui.
+        Praesent hendrerit auctor commodo. Donec tellus erat, egestas vitae nunc in, varius molestie mi. Nulla eget
+        orci sem. Sed at aliquet neque. Pellentesque convallis neque nec enim auctor, id imperdiet mauris ultrices.</p>
+    </div>
+  </div>
+
+  <h1>Carousel with texts beside the images.</h1>
+
+  <div class="text-beside-image-carousel carousel-container">
+    <div>
+      <img src="https://www.anime-evo.net/wp-content/uploads/2015/10/One-Punch-Man-01-03.jpg">
+      <p>Sed nec diam eget quam dictum bibendum et et dui. Donec mattis erat at tempus tincidunt. Vestibulum ante ipsum
+        primis in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus in augue volutpat, mollis nulla
+        vitae, luctus sapien. Donec pellentesque augue nec imperdiet tempor. Quisque aliquam scelerisque quam a
+        condimentum. Mauris placerat tortor at nulla molestie, vel vulputate nisl mollis. Nam id risus eget diam tempor
+        interdum.</p>
+    </div>
+    <div>
+      <img src="http://mangalerie.fr/wp-content/uploads/2016/01/Saitama_OK.jpg">
+      <p>Integer sed mauris fermentum, porttitor metus vehicula, sodales nulla. Praesent mattis neque non orci vehicula
+        ullamcorper. Integer cursus orci nisi, nec feugiat justo sodales at. Etiam eget ultricies dui. Morbi at
+        pellentesque justo. Proin ornare velit a purus elementum, vitae egestas urna accumsan. Suspendisse cursus eget
+        odio vitae sodales. Morbi laoreet tortor in tellus dictum, vitae porttitor lectus bibendum. Sed ligula lacus,
+        semper sit amet neque eget, vehicula luctus lacus. Phasellus hendrerit vel massa ut dapibus. Interdum et
+        malesuada fames ac ante ipsum primis in faucibus. Mauris rhoncus magna blandit felis gravida, in pellentesque
+        enim fermentum. Pellentesque non justo leo. Nunc ornare nisl in dignissim dictum. Phasellus aliquam nisi eget
+        semper pulvinar. Vivamus nec cursus mauris, vel lacinia leo.</p>
+    </div>
+    <div>
+      <img src="https://twosensei.files.wordpress.com/2015/10/one-punch-man-02-1080p-mkv_00005.png">
+      <p>Aenean tempus ligula vitae euismod scelerisque. Fusce tempor tempus justo, eget facilisis est euismod vel.
+        Nulla sed posuere arcu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nulla a finibus arcu. Sed
+        blandit vehicula urna at iaculis. Sed ultrices mattis fermentum. Donec in quam a turpis egestas ultricies.
+        Fusce leo mi, aliquam ac malesuada ut, placerat ac tortor. Nulla sed ultrices diam. Morbi at molestie sem.
+        Pellentesque orci justo, congue sit amet neque nec, vulputate vulputate orci.</p>
+    </div>
+    <div>
+      <img src="https://otakukart.com/animeblog/wp-content/uploads/2016/07/One-Punch-Man-05-Large-03.jpg">
+      <p>Donec vehicula sodales volutpat. Duis sit amet arcu vitae diam hendrerit dapibus. Nam nibh lorem, cursus in
+        lacus a, tincidunt tempus ligula. Cras ac dolor lobortis neque tincidunt tempus. Curabitur viverra consequat
+        quam sit amet ultricies. Nulla fringilla eget metus in semper. Curabitur auctor facilisis gravida. Aliquam
+        elementum, felis pulvinar lacinia mollis, sapien justo hendrerit ligula, vel eleifend magna ante a dui.
+        Praesent hendrerit auctor commodo. Donec tellus erat, egestas vitae nunc in, varius molestie mi. Nulla eget
+        orci sem. Sed at aliquet neque. Pellentesque convallis neque nec enim auctor, id imperdiet mauris ultrices.</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <h1>Carousel beside texts.</h1>
+
+  <div class="carousel-beside-text-container">
+    <div class="carousel-beside-text carousel-container">
+      <img src="https://www.anime-evo.net/wp-content/uploads/2015/10/One-Punch-Man-01-03.jpg">
+      <img src="http://mangalerie.fr/wp-content/uploads/2016/01/Saitama_OK.jpg">
+      <img src="https://twosensei.files.wordpress.com/2015/10/one-punch-man-02-1080p-mkv_00005.png">
+      <img src="https://otakukart.com/animeblog/wp-content/uploads/2016/07/One-Punch-Man-05-Large-03.jpg">
+    </div>
+
+    <p>Vivamus ut accumsan ex. Cras congue tellus ac mattis dictum. Donec blandit leo quis leo condimentum, eu pulvinar
+      ligula dictum. Maecenas suscipit justo turpis, eget tristique lacus consectetur sed. Donec cursus ipsum a neque
+      iaculis viverra. Etiam massa ligula, dignissim vitae sapien in, sagittis mattis sem. Suspendisse egestas dui
+      massa, at semper massa dignissim non. Duis finibus tortor ut ligula feugiat cursus. Etiam a pellentesque felis.
+      Quisque sagittis semper nunc, vitae accumsan erat pretium eget. Donec faucibus congue libero non molestie.
+      Phasellus posuere condimentum nisl ut laoreet. Pellentesque mattis enim ullamcorper massa ultricies molestie eu
+      quis augue. Donec dignissim turpis nibh, in bibendum risus facilisis ut.</p>
+
+    <p>
+      Quisque commodo, sapien quis feugiat facilisis, eros urna ultrices tortor, euismod bibendum dolor nisl a enim.
+      Quisque sed elit vel quam fermentum pretium. Maecenas porttitor ante a ipsum faucibus, non vestibulum orci
+      fermentum. Cras consectetur purus sed dapibus viverra. Nunc id tellus eget tellus hendrerit consectetur in sit
+      amet dui. Suspendisse ac nisi imperdiet, posuere velit in, posuere ipsum. Vivamus nec tempus augue. Pellentesque
+      eget justo ac tellus finibus ultricies. Cras id convallis ligula, at dictum quam. Mauris pulvinar pellentesque
+      urna, sed tristique justo vulputate eu. Etiam finibus metus sapien, non mattis magna convallis sed. Suspendisse
+      vel consectetur ligula. Donec auctor fermentum dignissim.</p>
+
+    <p>Maecenas in odio eu est varius euismod. Etiam convallis ex non lorem aliquam lobortis. Nunc turpis arcu, congue
+      eget elit vitae, hendrerit elementum arcu. Etiam aliquam faucibus erat sed auctor. Vestibulum euismod non ex eu
+      vulputate. Nullam rutrum sapien neque, non molestie augue ultricies in. Vestibulum sed scelerisque sapien, non
+      placerat eros. Cras ultrices urna id turpis congue, at mattis purus egestas. Etiam eget dapibus sapien. Sed
+      lectus ante, vestibulum eu tellus nec, ultrices dictum nunc. Nam consectetur, sapien id elementum ultrices, massa
+      dui pulvinar augue, eu mattis tellus elit ut risus. Proin ultricies accumsan felis ut vulputate. Nam dapibus
+      nulla lobortis, euismod diam eget, facilisis sapien. Fusce augue arcu, dapibus cursus nibh cursus, tristique
+      venenatis dolor. Maecenas magna diam, interdum at bibendum nec, euismod non odio.</p>
+
+    <p>Pellentesque mattis, nibh ut mollis tristique, purus risus accumsan leo, in eleifend ex dolor a ipsum.
+      Suspendisse sed nisi sit amet nibh lacinia efficitur vitae et dolor. Vivamus faucibus laoreet lobortis. Duis in
+      dictum turpis. Phasellus dictum at justo ac semper. Nulla lorem augue, accumsan in tortor sagittis, lobortis
+      imperdiet orci. Nam finibus ante et lobortis commodo. Aenean at velit nunc. Morbi urna massa, mollis at tristique
+      non, ultrices eget velit. Suspendisse porttitor metus et tincidunt sagittis. Sed ultricies a massa non cursus.
+      Aenean eu turpis nec lectus finibus vulputate. Donec eros nibh, facilisis at vehicula non, ultrices finibus
+      ligula.</p>
+
+    <p>Morbi interdum dictum urna ac commodo. Etiam fermentum lacinia ante id bibendum. Curabitur at mollis nisl.
+      Nullam in metus tortor. Cras id gravida nibh. Etiam convallis placerat neque ac pellentesque. Donec consectetur,
+      felis at mattis tempus, sem nibh feugiat orci, non aliquam odio augue vel odio. Nullam vulputate hendrerit
+      feugiat.</p>
+  </div>
+
   <script>
-    jscarousel(document.getElementById('carousel-container'), {
-      animationSpeed: 500,
-      itemDuration: 1500
-    });
+    const carouselContainers = document.getElementsByClassName('carousel-container');
+
+    for (var a = 0; a < carouselContainers.length; a++) {
+      jscarousel(carouselContainers[a], {
+        animationSpeed: 500,
+        itemDuration: 1500
+      });
+    }
   </script>
 </body>
 

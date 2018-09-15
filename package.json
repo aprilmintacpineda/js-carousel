@@ -6,8 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "precommit": "lint-staged",
-    "lint": "prettier \"src/*.js\" --write && eslint \"src/*.js\" --fix"
+    "lint": "prettier \"src/*.js\" --write && eslint \"src/*.js\" --fix",
+    "build": "node build.js"
   },
+  "files": [
+    "lib/*",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ],
   "lint-staged": {
     "*.js": [
       "prettier --write",
@@ -30,7 +37,10 @@
   "author": "April Mintac Pineda",
   "license": "MIT",
   "devDependencies": {
+    "babel-core": "^6.26.3",
     "babel-eslint": "^9.0.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-minify": "^0.4.3",
     "eslint": "^5.6.0",
     "husky": "^0.14.3",
     "lint-staged": "^7.2.2",
