@@ -9,11 +9,59 @@ function jscarousel (CarouselContainer, config) {
     ItemsWrapper.style.transform = `translateX(-${currentPage * containerWidth}px)`;
   }
 
+  function playCarousel () {
+    playTimeout = setTimeout(function tick () {
+      if (!isPlaying) {
+        isPlaying = true;
+        var shouldReset = false;
+        lastPage = currentPage;
+        currentPage = currentPage + 1;
+
+        /**
+         * when the page is on the last prepended item, navigate
+         * back to the first item but don't show animation
+         */
+        if (currentPage === maxPage + 1) {
+          shouldReset = true;
+          PagesContainer.children[0].style.backgroundColor = '#4ecbf4';
+        } else {
+          PagesContainer.children[currentPage - 1].style.backgroundColor = '#4ecbf4';
+        }
+
+        if (PagesContainer.children[lastPage - 1]) {
+          PagesContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
+        }
+
+        // enable animation
+        ItemsWrapper.style.transition = `transform ${config.animationSpeed}ms`;
+
+        // navigate to next item
+        navigateToNextItem();
+
+        if (shouldReset) {
+          setTimeout(function resetCarousel () {
+            isPlaying = false;
+            currentPage = 1;
+            // disable animation
+            ItemsWrapper.style.transition = '';
+            navigateToNextItem();
+          }, config.animationSpeed + 10);
+        } else {
+          isPlaying = false;
+        }
+
+        playCarousel();
+      }
+    }, config.itemDuration);
+  }
+
   // setup
   var currentPage = 1;
   var lastPage = 0;
   var maxPage = CarouselContainer.children.length;
   var containerWidth = CarouselContainer.clientWidth;
+  var isPlaying = false;
+  var playTimeout = false;
 
   var carouselItemStyles = `
     width: 100%;
@@ -62,6 +110,28 @@ function jscarousel (CarouselContainer, config) {
     var Page = document.createElement('div');
     Page.style = paginationStyles;
     PagesContainer.appendChild(Page);
+
+    Page.onclick = function goToPage (ev) {
+      if (!isPlaying) {
+        clearTimeout(playTimeout);
+        isPlaying = true;
+        lastPage = currentPage;
+
+        for (var a = 0; a < PagesContainer.children.length; a++) {
+          if (PagesContainer.children[a] === ev.target) {
+            currentPage = a + 1;
+            break;
+          }
+        }
+
+        PagesContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
+        PagesContainer.children[currentPage - 1].style.backgroundColor = '#4ecbf4';
+
+        navigateToNextItem();
+        isPlaying = false;
+        playCarousel();
+      }
+    };
   }
 
   // to be able to simulate an infinite scroll
@@ -76,42 +146,7 @@ function jscarousel (CarouselContainer, config) {
   // initially go to the first item
   PagesContainer.children[0].style.backgroundColor = '#4ecbf4';
   navigateToNextItem();
-
-  setInterval(function playCarousel () {
-    var shouldReset = false;
-    lastPage = currentPage;
-    currentPage = currentPage + 1;
-
-    /**
-     * when the page is on the last prepended item, navigate
-     * back to the first item but don't show animation
-     */
-    if (currentPage === maxPage + 1) {
-      shouldReset = true;
-      PagesContainer.children[0].style.backgroundColor = '#4ecbf4';
-    } else {
-      PagesContainer.children[currentPage - 1].style.backgroundColor = '#4ecbf4';
-    }
-
-    if (PagesContainer.children[lastPage - 1]) {
-      PagesContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
-    }
-
-    // enable animation
-    ItemsWrapper.style.transition = `transform ${config.animationSpeed}ms`;
-
-    // navigate to next item
-    navigateToNextItem();
-
-    if (shouldReset) {
-      setTimeout(function resetCarousel () {
-        currentPage = 1;
-        // disable animation
-        ItemsWrapper.style.transition = '';
-        navigateToNextItem();
-      }, config.animationSpeed + 10);
-    }
-  }, config.itemDuration);
+  playCarousel();
 }
 
 window.jscarousel = jscarousel;
