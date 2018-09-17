@@ -107,3 +107,5 @@ class myComponent extends Component {
 ```
 
 Or you can use [react-carousel](https://github.com/aprilmintacpineda/react-carousel) or [inferno-carousel](https://github.com/aprilmintacpineda/inferno-carousel).
+
+**Notes**: Because of how `js-carousel` handles creation of the carousel (using cloneNode which does not copy eventListeners), listeners **directly** added to a node would be lost. I'm currently working on a solution for this.
