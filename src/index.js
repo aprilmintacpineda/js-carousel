@@ -82,36 +82,40 @@ function jscarousel (CarouselContainer, config) {
       // enable animation
       ItemsWrapper.style.transition = `transform ${config.animationSpeed}ms`;
 
-      lastPage = currentPage;
+      if (Math.abs(resolveMouseX(ev) - swipeStartXPosition) >= config.swipeThreshold) {
+        lastPage = currentPage;
 
-      if (resolveMouseX(ev) > swipeStartXPosition) {
-        currentPage = currentPage - 1;
+        if (resolveMouseX(ev) > swipeStartXPosition) {
+          currentPage = currentPage - 1;
+        } else {
+          currentPage = currentPage + 1;
+        }
+
+        swipeStartXPosition = null;
+
+        navigateToNextItem();
+
+        if (currentPage === maxPage + 1) {
+          PagesContainer.children[0].style.backgroundColor = '#4ecbf4';
+          PagesContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
+          shouldReset = 1;
+        } else if (currentPage === 0) {
+          PagesContainer.children[maxPage - 1].style.backgroundColor = '#4ecbf4';
+          PagesContainer.children[0].style.backgroundColor = '#1a84a8';
+          shouldReset = maxPage;
+        } else {
+          PagesContainer.children[currentPage - 1].style.backgroundColor = '#4ecbf4';
+          PagesContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
+        }
+
+        playCarousel();
       } else {
-        currentPage = currentPage + 1;
-      }
-
-      swipeStartXPosition = null;
-
-      navigateToNextItem();
-
-      if (currentPage === maxPage + 1) {
-        PagesContainer.children[0].style.backgroundColor = '#4ecbf4';
-        PagesContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
-        shouldReset = 1;
-      } else if (currentPage === 0) {
-        PagesContainer.children[maxPage - 1].style.backgroundColor = '#4ecbf4';
-        PagesContainer.children[0].style.backgroundColor = '#1a84a8';
-        shouldReset = maxPage;
-      } else {
-        PagesContainer.children[currentPage - 1].style.backgroundColor = '#4ecbf4';
-        PagesContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
+        navigateToNextItem();
       }
 
       setTimeout(function resetCarousel () {
         isPlaying = false;
-        if (shouldReset !== false) {
-          simulateInfiniteScroll(shouldReset);
-        }
+        if (shouldReset !== false) simulateInfiniteScroll(shouldReset);
       }, config.animationSpeed + 10);
 
       // cleaning listeners after execution
@@ -120,8 +124,6 @@ function jscarousel (CarouselContainer, config) {
 
       ItemsWrapper.removeEventListener('touchmove', swipeMove);
       ItemsWrapper.removeEventListener('touchend', swipeEnd);
-
-      playCarousel();
     }
   }
 
