@@ -178,8 +178,9 @@ function jscarousel (CarouselContainer, config) {
     transform: translate(-50%, 0);
   `;
   var paginationStyles = `
-    display: inline;
-    padding: 2px 10px;
+    display: inline-block;
+    width: 7px;
+    height: 7px;
     background-color: #1a84a8;
     border-radius: 50%;
     margin-right: 10px;
@@ -195,19 +196,9 @@ function jscarousel (CarouselContainer, config) {
   // wrapper element for all the items
   var ItemsWrapper = document.createElement('div');
 
-  // apply styles to the elements
-  PagesContainer.style = pagesContainerStyles;
-  CarouselContainer.style = carouseLContainerStyles;
-  ItemsWrapper.style = itemsWrapperStyles;
-
-  // add listeners
-  ItemsWrapper.addEventListener('mousedown', swipeStart);
-  ItemsWrapper.addEventListener('touchstart', swipeStart);
-  ItemsWrapper.addEventListener('dragstart', preventDrag);
-
-  for (var a = 0; a < maxPage; a++) {
-    CarouselContainer.children[a].style = carouselItemStyles;
-    ItemsWrapper.appendChild(CarouselContainer.children[a].cloneNode(true));
+  while (CarouselContainer.children.length) {
+    CarouselContainer.children[0].style = carouselItemStyles;
+    ItemsWrapper.appendChild(CarouselContainer.children[0]);
 
     // might as well create pagination elements now
     var Page = document.createElement('div');
@@ -241,8 +232,13 @@ function jscarousel (CarouselContainer, config) {
   }
 
   // to be able to simulate an infinite scroll
-  ItemsWrapper.prepend(CarouselContainer.children[maxPage - 1].cloneNode(true));
-  ItemsWrapper.append(CarouselContainer.children[0].cloneNode(true));
+  ItemsWrapper.appendChild(ItemsWrapper.children[0].cloneNode(true));
+  ItemsWrapper.prepend(ItemsWrapper.children[maxPage - 1].cloneNode(true));
+
+  // apply styles to the elements
+  PagesContainer.style = pagesContainerStyles;
+  CarouselContainer.style = carouseLContainerStyles;
+  ItemsWrapper.style = itemsWrapperStyles;
 
   // replace the container with the built carousel
   CarouselContainer.innerHTML = '';
@@ -253,6 +249,11 @@ function jscarousel (CarouselContainer, config) {
   PagesContainer.children[0].style.backgroundColor = '#4ecbf4';
   navigateToNextItem();
   playCarousel();
+
+  // add listeners
+  ItemsWrapper.addEventListener('mousedown', swipeStart);
+  ItemsWrapper.addEventListener('touchstart', swipeStart);
+  ItemsWrapper.addEventListener('dragstart', preventDrag);
 
   window.addEventListener('resize', function () {
     clearTimeout(carouselPlayer);
