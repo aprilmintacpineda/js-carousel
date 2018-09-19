@@ -77,6 +77,8 @@ function jscarousel (CarouselContainer, config) {
 
   function swipeEnd (ev) {
     if (swipeStartXPosition !== null) {
+      ev.stopPropagation();
+
       var shouldReset = false;
 
       // enable animation

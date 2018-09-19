@@ -75,11 +75,14 @@
 
   <h1>Full width Carousel with images inside.</h1>
 
+  <p>These images have click events on them, click on one of them to see console logs. Swipes won't trigger those click
+    event.</p>
+
   <div class="image-carousel carousel-container">
-    <img src="https://www.anime-evo.net/wp-content/uploads/2015/10/One-Punch-Man-01-03.jpg">
-    <img src="http://mangalerie.fr/wp-content/uploads/2016/01/Saitama_OK.jpg">
-    <img src="https://twosensei.files.wordpress.com/2015/10/one-punch-man-02-1080p-mkv_00005.png">
-    <img src="https://otakukart.com/animeblog/wp-content/uploads/2016/07/One-Punch-Man-05-Large-03.jpg">
+    <img onclick="console.log('Full width Carousel: img 1')" src="https://www.anime-evo.net/wp-content/uploads/2015/10/One-Punch-Man-01-03.jpg">
+    <img onclick="console.log('Full width Carousel: img 2')" src="http://mangalerie.fr/wp-content/uploads/2016/01/Saitama_OK.jpg">
+    <img onclick="console.log('Full width Carousel: img 3')" src="https://twosensei.files.wordpress.com/2015/10/one-punch-man-02-1080p-mkv_00005.png">
+    <img onclick="console.log('Full width Carousel: img 4')" src="https://otakukart.com/animeblog/wp-content/uploads/2016/07/One-Punch-Man-05-Large-03.jpg">
   </div>
 
   <hr>
