@@ -1,12 +1,14 @@
 /** @format */
 
-function jscarousel (CarouselContainer, config) {
+window.jscarousel = function (CarouselContainer, config) {
   function navigateToNextItem () {
-    ItemsWrapper.style.webkitTransform = `translateX(-${currentPage * containerWidth}px)`;
-    ItemsWrapper.style.MozTransform = `translateX(-${currentPage * containerWidth}px)`;
-    ItemsWrapper.style.msTransform = `translateX(-${currentPage * containerWidth}px)`;
-    ItemsWrapper.style.OTransform = `translateX(-${currentPage * containerWidth}px)`;
-    ItemsWrapper.style.transform = `translateX(-${currentPage * containerWidth}px)`;
+    const transform = 'translateX(-' + currentPage * containerWidth + 'px)';
+
+    ItemsWrapper.style.webkitTransform = transform;
+    ItemsWrapper.style.MozTransform = transform;
+    ItemsWrapper.style.msTransform = transform;
+    ItemsWrapper.style.OTransform = transform;
+    ItemsWrapper.style.transform = transform;
   }
 
   function simulateInfiniteScroll (resetPage) {
@@ -40,7 +42,7 @@ function jscarousel (CarouselContainer, config) {
         }
 
         // enable animation
-        ItemsWrapper.style.transition = `transform ${config.animationSpeed}ms`;
+        ItemsWrapper.style.transition = transition;
 
         // navigate to next item
         navigateToNextItem();
@@ -62,16 +64,16 @@ function jscarousel (CarouselContainer, config) {
 
   function swipeMove (ev) {
     if (swipeStartXPosition !== null) {
-      ItemsWrapper.style.webkitTransform = `translateX(-${currentPage * containerWidth +
-        (swipeStartXPosition - resolveMouseX(ev))}px)`;
-      ItemsWrapper.style.MozTransform = `translateX(-${currentPage * containerWidth +
-        (swipeStartXPosition - resolveMouseX(ev))}px)`;
-      ItemsWrapper.style.msTransform = `translateX(-${currentPage * containerWidth +
-        (swipeStartXPosition - resolveMouseX(ev))}px)`;
-      ItemsWrapper.style.OTransform = `translateX(-${currentPage * containerWidth +
-        (swipeStartXPosition - resolveMouseX(ev))}px)`;
-      ItemsWrapper.style.transform = `translateX(-${currentPage * containerWidth +
-        (swipeStartXPosition - resolveMouseX(ev))}px)`;
+      const translateX =
+        'translateX(-' +
+        (currentPage * containerWidth + (swipeStartXPosition - resolveMouseX(ev))) +
+        'px)';
+
+      ItemsWrapper.style.webkitTransform = translateX;
+      ItemsWrapper.style.MozTransform = translateX;
+      ItemsWrapper.style.msTransform = translateX;
+      ItemsWrapper.style.OTransform = translateX;
+      ItemsWrapper.style.transform = translateX;
     }
   }
 
@@ -82,7 +84,7 @@ function jscarousel (CarouselContainer, config) {
       var shouldReset = false;
 
       // enable animation
-      ItemsWrapper.style.transition = `transform ${config.animationSpeed}ms`;
+      ItemsWrapper.style.transition = transition;
 
       if (Math.abs(resolveMouseX(ev) - swipeStartXPosition) >= config.swipeThreshold) {
         lastPage = currentPage;
@@ -136,6 +138,7 @@ function jscarousel (CarouselContainer, config) {
       isPlaying = true;
       swipeStartXPosition = resolveMouseX(ev);
 
+      // disable animation
       ItemsWrapper.style.transition = '';
 
       ItemsWrapper.addEventListener('mousemove', swipeMove);
@@ -151,6 +154,7 @@ function jscarousel (CarouselContainer, config) {
     ev.preventDefault();
   }
 
+  const transition = 'transform ' + config.animationSpeed + 'ms';
   // computation
   var currentPage = 1;
   var lastPage = 0;
@@ -162,36 +166,6 @@ function jscarousel (CarouselContainer, config) {
   // swipe
   var swipeStartXPosition = null;
 
-  var carouselItemStyles = `
-    width: 100%;
-    vertical-align: top;
-    display: inline-block;
-    white-space: pre-line;
-  `;
-  var carouseLContainerStyles = `
-    white-space: nowrap;
-    overflow: hidden;
-    position: relative;
-  `;
-  var pagesContainerStyles = `
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translate(-50%, 0);
-  `;
-  var paginationStyles = `
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    background-color: #1a84a8;
-    border-radius: 50%;
-    margin-right: 10px;
-    cursor: pointer;
-  `;
-  var itemsWrapperStyles = `
-    overflow: visible;
-  `;
-
   // the pagination element
   var PagesContainer = document.createElement('div');
 
@@ -199,12 +173,14 @@ function jscarousel (CarouselContainer, config) {
   var ItemsWrapper = document.createElement('div');
 
   while (CarouselContainer.children.length) {
-    CarouselContainer.children[0].style = carouselItemStyles;
+    CarouselContainer.children[0].style =
+      'width: 100%; vertical-align: top; display: inline-block; white-space: pre-line;';
     ItemsWrapper.appendChild(CarouselContainer.children[0]);
 
     // might as well create pagination elements now
     var Page = document.createElement('div');
-    Page.style = paginationStyles;
+    Page.style =
+      'display: inline-block; width: 7px; height: 7px; background-color: #1a84a8; border-radius: 50%; margin-right: 10px; cursor: pointer;';
     PagesContainer.appendChild(Page);
 
     Page.onclick = function goToPage (ev) {
@@ -224,7 +200,7 @@ function jscarousel (CarouselContainer, config) {
         PagesContainer.children[currentPage - 1].style.backgroundColor = '#4ecbf4';
 
         // enable animation
-        ItemsWrapper.style.transition = `transform ${config.animationSpeed}ms`;
+        ItemsWrapper.style.transition = transition;
 
         navigateToNextItem();
         isPlaying = false;
@@ -238,9 +214,10 @@ function jscarousel (CarouselContainer, config) {
   ItemsWrapper.prepend(ItemsWrapper.children[maxPage - 1].cloneNode(true));
 
   // apply styles to the elements
-  PagesContainer.style = pagesContainerStyles;
-  CarouselContainer.style = carouseLContainerStyles;
-  ItemsWrapper.style = itemsWrapperStyles;
+  PagesContainer.style =
+    'position: absolute; bottom: 20px; left: 50%; transform: translate(-50%, 0);';
+  CarouselContainer.style = 'white-space: nowrap; overflow: hidden; position: relative;';
+  ItemsWrapper.style = 'overflow: visible;';
 
   // replace the container with the built carousel
   CarouselContainer.innerHTML = '';
@@ -258,13 +235,11 @@ function jscarousel (CarouselContainer, config) {
   ItemsWrapper.addEventListener('dragstart', preventDrag);
 
   window.addEventListener('resize', function () {
-    clearTimeout(carouselPlayer);
     isPlaying = true;
+    clearTimeout(carouselPlayer);
     containerWidth = CarouselContainer.clientWidth;
     navigateToNextItem();
     isPlaying = false;
     playCarousel();
   });
-}
-
-window.jscarousel = jscarousel;
+};
