@@ -19,7 +19,7 @@ window.jscarousel = function (CarouselContainer, config) {
   }
 
   function playCarousel () {
-    carouselPlayer = setTimeout(function tick () {
+    carouselPlayer = setTimeout(function () {
       if (!isPlaying) {
         isPlaying = true;
         var shouldReset = false;
@@ -47,7 +47,7 @@ window.jscarousel = function (CarouselContainer, config) {
         // navigate to next item
         navigateToNextItem();
 
-        setTimeout(function resetCarousel () {
+        setTimeout(function () {
           isPlaying = false;
           if (shouldReset) simulateInfiniteScroll(1);
         }, config.animationSpeed + 10);
@@ -58,8 +58,9 @@ window.jscarousel = function (CarouselContainer, config) {
   }
 
   function resolveMouseX (ev) {
-    if (ev instanceof MouseEvent) return ev.clientX;
-    return ev.changedTouches[0].clientX || ev.changedTouches[0].pageX;
+    return ev instanceof MouseEvent
+      ? ev.clientX
+      : ev.changedTouches[0].clientX || ev.changedTouches[0].pageX;
   }
 
   function swipeMove (ev) {
@@ -117,7 +118,7 @@ window.jscarousel = function (CarouselContainer, config) {
 
       playCarousel();
 
-      setTimeout(function resetCarousel () {
+      setTimeout(function () {
         isPlaying = false;
         if (shouldReset !== false) simulateInfiniteScroll(shouldReset);
       }, config.animationSpeed + 10);
@@ -133,9 +134,8 @@ window.jscarousel = function (CarouselContainer, config) {
 
   function swipeStart (ev) {
     if (!isPlaying) {
-      clearTimeout(carouselPlayer);
-
       isPlaying = true;
+      clearTimeout(carouselPlayer);
       swipeStartXPosition = resolveMouseX(ev);
 
       // disable animation
@@ -185,8 +185,8 @@ window.jscarousel = function (CarouselContainer, config) {
 
     Page.onclick = function goToPage (ev) {
       if (!isPlaying) {
-        clearTimeout(carouselPlayer);
         isPlaying = true;
+        clearTimeout(carouselPlayer);
         lastPage = currentPage;
 
         for (var a = 0; a < PagesContainer.children.length; a++) {
