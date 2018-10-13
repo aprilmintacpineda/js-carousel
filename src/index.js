@@ -225,7 +225,7 @@ window.jscarousel = function (targetCarousel, config) {
 
   if (config.noClone) {
     maxPage -= 2;
-    maxLoop -= 1;
+    maxLoop -= 2;
     targetCarousel.children[0].style =
       'width: 100%; vertical-align: top; display: inline-block; white-space: pre-line;';
     ItemsWrapper.appendChild(targetCarousel.children[0]);

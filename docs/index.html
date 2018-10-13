@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>1.3.1</title>
+  <title>1.3.2</title>
   <!-- <script src="https://www.unpkg.com/js-carousel@latest/lib/index.min.js"></script> -->
   <script src="../src/index.js"></script>
   <!-- <script src="../lib/index.js"></script> -->
@@ -79,10 +79,12 @@
     event.</p>
 
   <div class="image-carousel carousel-container">
+    <img onclick="console.log('Full width Carousel: img 4')" src="https://otakukart.com/animeblog/wp-content/uploads/2016/07/One-Punch-Man-05-Large-03.jpg">
     <img onclick="console.log('Full width Carousel: img 1')" src="https://www.anime-evo.net/wp-content/uploads/2015/10/One-Punch-Man-01-03.jpg">
     <img onclick="console.log('Full width Carousel: img 2')" src="http://mangalerie.fr/wp-content/uploads/2016/01/Saitama_OK.jpg">
     <img onclick="console.log('Full width Carousel: img 3')" src="https://twosensei.files.wordpress.com/2015/10/one-punch-man-02-1080p-mkv_00005.png">
     <img onclick="console.log('Full width Carousel: img 4')" src="https://otakukart.com/animeblog/wp-content/uploads/2016/07/One-Punch-Man-05-Large-03.jpg">
+    <img onclick="console.log('Full width Carousel: img 1')" src="https://www.anime-evo.net/wp-content/uploads/2015/10/One-Punch-Man-01-03.jpg">
   </div>
 
   <hr>
@@ -233,14 +235,23 @@
   </div>
 
   <script>
-    const carouselContainers = document.getElementsByClassName('carousel-container');
+    var carouselContainers = document.getElementsByClassName('carousel-container');
 
     for (var a = 0; a < carouselContainers.length; a++) {
-      jscarousel(carouselContainers[a], {
-        animationSpeed: 500,
-        itemDuration: 1500,
-        swipeThreshold: 150
-      });
+      if (a === 0) {
+        jscarousel(carouselContainers[a], {
+          noClone: true,
+          animationSpeed: 500,
+          itemDuration: 1500,
+          swipeThreshold: 150
+        });
+      } else {
+        jscarousel(carouselContainers[a], {
+          animationSpeed: 500,
+          itemDuration: 1500,
+          swipeThreshold: 150
+        });
+      }
     }
   </script>
 </body>
