@@ -43,6 +43,7 @@ The first parameter that `jscarousel` function expects is an `HTML element` that
 - `animationSpeed` is the speed (in terms of milliseconds) of the transition animation.
 - `itemDuration` is the amount of time (in terms of milliseconds) it has to wait before transitioning to the next item.
 - `swipeThreshold` is the sensitivity of swipe, the lower the number the more sensitive the swipe will be, you don't want it to be very high otherwise the users would have a hard time navigating around using swipe. You don't want it to be very low, otherwise a click might become enough to navigate around using swipe. I suggest starting at `150` and tweaking it from there according to how you like it.
+- `noClone` to simulate infinite scroll, the library clones the first and the last elements, this could have unwanted effects if you are using it with ReactJS or InfernoJS. Set this configuration to `true` if you don't want this feature. This feature is being used by inferno-carousel and react-carousel. Consider using [react-carousel](https://github.com/aprilmintacpineda/react-carousel) or [inferno-carousel](https://github.com/aprilmintacpineda/inferno-carousel) so you don't need to worry about this.
 
 ## with npm
 
@@ -73,37 +74,5 @@ Make sure to load the js file after the target element has loaded.
 
 ## With ReactJS / InfernoJS
 
-In your main entry file:
-
-```js
-import jscarousel from 'js-carousel';
-```
-
-In your carousel component:
-
-```jsx
-class myComponent extends Component {
-  componentDidMount () {
-    jscarousel(this.carouselContainer, {
-      animationSpeed: 500,
-      itemDuration: 1500,
-      swipeThreshold: 150
-    });
-  }
-
-  render () {
-    return (
-      <div ref={el => {
-        this.carouselContainer = el;
-      }}>
-        <img src="https://www.anime-evo.net/wp-content/uploads/2015/10/One-Punch-Man-01-03.jpg">
-        <img src="http://mangalerie.fr/wp-content/uploads/2016/01/Saitama_OK.jpg">
-        <img src="https://twosensei.files.wordpress.com/2015/10/one-punch-man-02-1080p-mkv_00005.png">
-        <img src="https://otakukart.com/animeblog/wp-content/uploads/2016/07/One-Punch-Man-05-Large-03.jpg">
-      <div>
-    );
-  }
-}
-```
-
-Or you can use [react-carousel](https://github.com/aprilmintacpineda/react-carousel) or [inferno-carousel](https://github.com/aprilmintacpineda/inferno-carousel).
+- [react-carousel](https://github.com/aprilmintacpineda/react-carousel)
+- [inferno-carousel](https://github.com/aprilmintacpineda/inferno-carousel)
