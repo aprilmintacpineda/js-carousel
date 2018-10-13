@@ -1,6 +1,6 @@
 /** @format */
 
-window.jscarousel = function (CarouselContainer, config) {
+window.jscarousel = function (targetCarousel, config) {
   function navigateToNextItem () {
     const transform = 'translateX(-' + currentPage * containerWidth + 'px)';
 
@@ -22,7 +22,7 @@ window.jscarousel = function (CarouselContainer, config) {
     carouselPlayer = setTimeout(function () {
       if (!isPlaying) {
         isPlaying = true;
-        var shouldReset = false;
+        let shouldReset = false;
         lastPage = currentPage;
         currentPage = currentPage + 1;
 
@@ -32,13 +32,13 @@ window.jscarousel = function (CarouselContainer, config) {
          */
         if (currentPage === maxPage + 1) {
           shouldReset = true;
-          PagesContainer.children[0].style.backgroundColor = '#4ecbf4';
+          paginationContainer.children[0].style.backgroundColor = '#4ecbf4';
         } else {
-          PagesContainer.children[currentPage - 1].style.backgroundColor = '#4ecbf4';
+          paginationContainer.children[currentPage - 1].style.backgroundColor = '#4ecbf4';
         }
 
-        if (PagesContainer.children[lastPage - 1]) {
-          PagesContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
+        if (paginationContainer.children[lastPage - 1]) {
+          paginationContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
         }
 
         // enable animation
@@ -82,7 +82,7 @@ window.jscarousel = function (CarouselContainer, config) {
     if (swipeStartXPosition !== null) {
       ev.stopPropagation();
 
-      var shouldReset = false;
+      let shouldReset = false;
 
       // enable animation
       ItemsWrapper.style.transition = transition;
@@ -101,16 +101,16 @@ window.jscarousel = function (CarouselContainer, config) {
         navigateToNextItem();
 
         if (currentPage === maxPage + 1) {
-          PagesContainer.children[0].style.backgroundColor = '#4ecbf4';
-          PagesContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
+          paginationContainer.children[0].style.backgroundColor = '#4ecbf4';
+          paginationContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
           shouldReset = 1;
         } else if (currentPage === 0) {
-          PagesContainer.children[maxPage - 1].style.backgroundColor = '#4ecbf4';
-          PagesContainer.children[0].style.backgroundColor = '#1a84a8';
+          paginationContainer.children[maxPage - 1].style.backgroundColor = '#4ecbf4';
+          paginationContainer.children[0].style.backgroundColor = '#1a84a8';
           shouldReset = maxPage;
         } else {
-          PagesContainer.children[currentPage - 1].style.backgroundColor = '#4ecbf4';
-          PagesContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
+          paginationContainer.children[currentPage - 1].style.backgroundColor = '#4ecbf4';
+          paginationContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
         }
       } else {
         navigateToNextItem();
@@ -152,30 +152,22 @@ window.jscarousel = function (CarouselContainer, config) {
   }
 
   function addPassiveListener (target, event, handler) {
-    let passiveSupported = false;
+    let passiveListenerIsSupported = false;
 
     try {
       const options = {};
 
       Object.defineProperty(options, 'passive', {
-        get () {
-          passiveSupported = true;
+        get: function get () {
+          passiveListenerIsSupported = true;
         }
       });
 
       window.addEventListener('test', options, options);
       window.removeEventListener('test', options, options);
-    } catch (err) {
-      // eslint-disable-next-line
-      console.log(
-        `%c${new Date().format('[%f %D, %y][%H:%N:%S %a]')}:`,
-        'background: #222; color: #bada55',
-        'addPassiveListener failed:',
-        err
-      );
-    }
+    } catch (err) {}
 
-    if (passiveSupported) {
+    if (passiveListenerIsSupported) {
       target.addEventListener(event, handler, {
         passive: true
       });
@@ -184,80 +176,92 @@ window.jscarousel = function (CarouselContainer, config) {
     }
   }
 
+  function goToPage (ev) {
+    if (!isPlaying) {
+      isPlaying = true;
+      clearTimeout(carouselPlayer);
+      lastPage = currentPage;
+
+      for (let a = 0; a < paginationContainer.children.length; a++) {
+        if (paginationContainer.children[a] === ev.target) {
+          currentPage = a + 1;
+          break;
+        }
+      }
+
+      paginationContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
+      paginationContainer.children[currentPage - 1].style.backgroundColor = '#4ecbf4';
+
+      // enable animation
+      ItemsWrapper.style.transition = transition;
+
+      navigateToNextItem();
+      isPlaying = false;
+      playCarousel();
+    }
+  }
+
+  const paginationContainer = document.createElement('div');
+  const ItemsWrapper = document.createElement('div');
   const transition = 'transform ' + config.animationSpeed + 'ms';
   // computation
-  var currentPage = 1;
-  var lastPage = 0;
-  var maxPage = CarouselContainer.children.length;
-  var containerWidth = CarouselContainer.clientWidth;
+  let lastPage = 0;
+  let currentPage = 1;
+  let maxPage = targetCarousel.children.length;
+  let containerWidth = targetCarousel.clientWidth;
   // autoplay
-  var isPlaying = false;
-  var carouselPlayer;
+  let isPlaying = false;
+  let carouselPlayer;
   // swipe
-  var swipeStartXPosition = null;
+  let swipeStartXPosition = null;
 
-  // the pagination element
-  var PagesContainer = document.createElement('div');
+  // apply styles to the elements
+  targetCarousel.style = 'white-space: nowrap; overflow: hidden; position: relative;';
+  paginationContainer.style =
+    'position: absolute; bottom: 20px; left: 50%; transform: translate(-50%, 0);';
+  ItemsWrapper.style = 'overflow: visible;';
 
-  // wrapper element for all the items
-  var ItemsWrapper = document.createElement('div');
+  let maxLoop = targetCarousel.children.length;
 
-  while (CarouselContainer.children.length) {
-    CarouselContainer.children[0].style =
+  if (config.noClone) {
+    maxPage -= 2;
+    maxLoop -= 1;
+    targetCarousel.children[0].style =
       'width: 100%; vertical-align: top; display: inline-block; white-space: pre-line;';
-    ItemsWrapper.appendChild(CarouselContainer.children[0]);
+    ItemsWrapper.appendChild(targetCarousel.children[0]);
+  }
+
+  while (maxLoop) {
+    maxLoop--;
+    targetCarousel.children[0].style =
+      'width: 100%; vertical-align: top; display: inline-block; white-space: pre-line;';
+    ItemsWrapper.appendChild(targetCarousel.children[0]);
 
     // might as well create pagination elements now
-    var Page = document.createElement('div');
+    const Page = document.createElement('div');
     Page.style =
       'display: inline-block; width: 7px; height: 7px; background-color: #1a84a8; border-radius: 50%; margin-right: 10px; cursor: pointer;';
-    PagesContainer.appendChild(Page);
-
-    Page.onclick = function goToPage (ev) {
-      if (!isPlaying) {
-        isPlaying = true;
-        clearTimeout(carouselPlayer);
-        lastPage = currentPage;
-
-        for (var a = 0; a < PagesContainer.children.length; a++) {
-          if (PagesContainer.children[a] === ev.target) {
-            currentPage = a + 1;
-            break;
-          }
-        }
-
-        PagesContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
-        PagesContainer.children[currentPage - 1].style.backgroundColor = '#4ecbf4';
-
-        // enable animation
-        ItemsWrapper.style.transition = transition;
-
-        navigateToNextItem();
-        isPlaying = false;
-        playCarousel();
-      }
-    };
+    Page.onclick = goToPage;
+    paginationContainer.appendChild(Page);
   }
 
   if (!config.noClone) {
     // to be able to simulate an infinite scroll
     ItemsWrapper.appendChild(ItemsWrapper.children[0].cloneNode(true));
     ItemsWrapper.prepend(ItemsWrapper.children[maxPage - 1].cloneNode(true));
+  } else {
+    targetCarousel.children[0].style =
+      'width: 100%; vertical-align: top; display: inline-block; white-space: pre-line;';
+    ItemsWrapper.appendChild(targetCarousel.children[0]);
   }
 
-  // apply styles to the elements
-  PagesContainer.style =
-    'position: absolute; bottom: 20px; left: 50%; transform: translate(-50%, 0);';
-  CarouselContainer.style = 'white-space: nowrap; overflow: hidden; position: relative;';
-  ItemsWrapper.style = 'overflow: visible;';
-
   // replace the container with the built carousel
-  CarouselContainer.innerHTML = '';
-  CarouselContainer.appendChild(ItemsWrapper);
-  CarouselContainer.appendChild(PagesContainer);
+  targetCarousel.innerHTML = '';
+  targetCarousel.appendChild(ItemsWrapper);
+  targetCarousel.appendChild(paginationContainer);
 
   // initially go to the first item
-  PagesContainer.children[0].style.backgroundColor = '#4ecbf4';
+  paginationContainer.children[0].style.backgroundColor = '#4ecbf4';
   navigateToNextItem();
   playCarousel();
 
@@ -274,7 +278,7 @@ window.jscarousel = function (CarouselContainer, config) {
   addPassiveListener(window, 'resize', function () {
     isPlaying = true;
     clearTimeout(carouselPlayer);
-    containerWidth = CarouselContainer.clientWidth;
+    containerWidth = targetCarousel.clientWidth;
     navigateToNextItem();
     isPlaying = false;
     playCarousel();
