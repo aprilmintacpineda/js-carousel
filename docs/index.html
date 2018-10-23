@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>1.3.3</title>
-  <script src="https://www.unpkg.com/js-carousel@latest/lib/index.min.js"></script>
+  <!-- <script src="https://www.unpkg.com/js-carousel@latest/lib/index.min.js"></script> -->
   <!-- <script src="../src/index.js"></script> -->
-  <!-- <script src="../lib/index.js"></script> -->
+  <script src="../lib/index.js"></script>
   <style>
     .image-carousel img {
       height: 400px;
@@ -23,12 +23,13 @@
     }
 
     .image-text-carousel {
-      width: 500px;
+      width: 100%;
     }
 
     .image-text-carousel img {
       height: 400px;
-      width: 400px
+      width: 100%;
+      display: block;
     }
 
     .text-beside-image-carousel {
@@ -185,7 +186,7 @@
 
   <hr>
 
-  <h1>Carousel beside texts.</h1>
+  <h1>Carousel beside texts (will be removed after 15 seconds).</h1>
 
   <div class="carousel-beside-text-container">
     <div class="carousel-beside-text carousel-container">
@@ -237,6 +238,8 @@
 
   <script>
     var carouselContainers = document.getElementsByClassName('carousel-container');
+    var lastItem;
+    var stop;
 
     for (var a = 0; a < carouselContainers.length; a++) {
       if (a === 0) {
@@ -246,6 +249,17 @@
           itemDuration: 1500,
           swipeThreshold: 150
         });
+      } else if (a === carouselContainers.length - 1) {
+        lastItem = carouselContainers[a];
+
+        stop = jscarousel(carouselContainers[a], {
+          animationSpeed: 500,
+          itemDuration: 1500,
+          swipeThreshold: 150,
+          onPlay: function () {
+            console.log('playing!');
+          }
+        });
       } else {
         jscarousel(carouselContainers[a], {
           animationSpeed: 500,
@@ -254,6 +268,11 @@
         });
       }
     }
+
+    setTimeout(function () {
+      stop();
+      lastItem.remove();
+    }, 15000);
   </script>
 </body>
 

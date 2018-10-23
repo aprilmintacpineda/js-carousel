@@ -63,12 +63,22 @@ somewhere in your js file.
 ```js
 import jscarousel from 'js-carousel';
 
-jscarousel(document.getElementById('carousel-container'), {
-  animationSpeed: 500,
-  itemDuration: 1500,
-  swipeThreshold: 150
-});
+const stop = jscarousel(
+  // targetCarousel
+  document.getElementById('carousel-container'),
+  // carousel config
+  {
+    animationSpeed: 500,
+    itemDuration: 1500,
+    swipeThreshold: 150
+  }
+);
+
+// Later on, when I want to stop the carousel from playing.
+stop();
 ```
+
+By default, the carousel would stop when the `targetCarousel.parentElement` has become `null`. But you can manually stop it by calling the returned function of the `jscarousel`.
 
 Make sure to load the js file after the target element has loaded.
 

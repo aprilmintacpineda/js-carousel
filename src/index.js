@@ -19,42 +19,44 @@ window.jscarousel = function (targetCarousel, config) {
   }
 
   function playCarousel () {
-    carouselPlayer = setTimeout(function () {
-      if (!isPlaying) {
-        isPlaying = true;
-        let shouldReset = false;
-        lastPage = currentPage;
-        currentPage = currentPage + 1;
+    if (!hasBeenStopped) {
+      carouselPlayer = setTimeout(function () {
+        if (!isPlaying && targetCarousel.parentElement) {
+          isPlaying = true;
+          let shouldReset = false;
+          lastPage = currentPage;
+          currentPage = currentPage + 1;
 
-        /**
-         * when the page is on the last prepended item, navigate
-         * back to the first item but don't show animation
-         */
-        if (currentPage === maxPage + 1) {
-          shouldReset = true;
-          paginationContainer.children[0].style.backgroundColor = '#4ecbf4';
-        } else {
-          paginationContainer.children[currentPage - 1].style.backgroundColor = '#4ecbf4';
+          /**
+           * when the page is on the last prepended item, navigate
+           * back to the first item but don't show animation
+           */
+          if (currentPage === maxPage + 1) {
+            shouldReset = true;
+            paginationContainer.children[0].style.backgroundColor = '#4ecbf4';
+          } else {
+            paginationContainer.children[currentPage - 1].style.backgroundColor = '#4ecbf4';
+          }
+
+          if (paginationContainer.children[lastPage - 1]) {
+            paginationContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
+          }
+
+          // enable animation
+          ItemsWrapper.style.transition = transition;
+
+          // navigate to next item
+          navigateToNextItem();
+
+          setTimeout(function () {
+            isPlaying = false;
+            if (shouldReset) simulateInfiniteScroll(1);
+          }, config.animationSpeed + 10);
+
+          playCarousel();
         }
-
-        if (paginationContainer.children[lastPage - 1]) {
-          paginationContainer.children[lastPage - 1].style.backgroundColor = '#1a84a8';
-        }
-
-        // enable animation
-        ItemsWrapper.style.transition = transition;
-
-        // navigate to next item
-        navigateToNextItem();
-
-        setTimeout(function () {
-          isPlaying = false;
-          if (shouldReset) simulateInfiniteScroll(1);
-        }, config.animationSpeed + 10);
-
-        playCarousel();
-      }
-    }, config.itemDuration);
+      }, config.itemDuration);
+    }
   }
 
   function resolveMouseX (ev) {
@@ -214,6 +216,7 @@ window.jscarousel = function (targetCarousel, config) {
   let carouselPlayer;
   // swipe
   let swipeStartXPosition = null;
+  let hasBeenStopped = false;
 
   // apply styles to the elements
   targetCarousel.style = 'white-space: nowrap; overflow: hidden; position: relative;';
@@ -283,4 +286,9 @@ window.jscarousel = function (targetCarousel, config) {
     isPlaying = false;
     playCarousel();
   });
+
+  return function () {
+    clearTimeout(carouselPlayer);
+    hasBeenStopped = true;
+  };
 };
