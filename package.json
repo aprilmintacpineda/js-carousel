@@ -1,6 +1,6 @@
 {
   "name": "js-carousel",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "Vanilla JS carousel for the web.",
   "main": "lib/index.js",
   "scripts": {
