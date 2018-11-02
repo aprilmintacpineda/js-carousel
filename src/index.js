@@ -2,7 +2,7 @@
 
 window.jscarousel = function (targetCarousel, config) {
   function navigateToNextItem () {
-    const transform = 'translateX(-' + currentPage * containerWidth + 'px)';
+    const transform = 'translate(-' + currentPage * containerWidth + 'px, 0)';
 
     ItemsWrapper.style.webkitTransform = transform;
     ItemsWrapper.style.MozTransform = transform;
@@ -67,16 +67,16 @@ window.jscarousel = function (targetCarousel, config) {
 
   function swipeMove (ev) {
     if (swipeStartXPosition !== null) {
-      const translateX =
-        'translateX(-' +
+      const translate =
+        'translate(-' +
         (currentPage * containerWidth + (swipeStartXPosition - resolveMouseX(ev))) +
-        'px)';
+        'px, 0)';
 
-      ItemsWrapper.style.webkitTransform = translateX;
-      ItemsWrapper.style.MozTransform = translateX;
-      ItemsWrapper.style.msTransform = translateX;
-      ItemsWrapper.style.OTransform = translateX;
-      ItemsWrapper.style.transform = translateX;
+      ItemsWrapper.style.webkitTransform = translate;
+      ItemsWrapper.style.MozTransform = translate;
+      ItemsWrapper.style.msTransform = translate;
+      ItemsWrapper.style.OTransform = translate;
+      ItemsWrapper.style.transform = translate;
     }
   }
 
