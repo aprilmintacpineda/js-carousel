@@ -4,17 +4,17 @@ window.jscarousel = function (targetCarousel, config) {
   function navigateToNextItem () {
     const transform = 'translate(-' + currentPage * containerWidth + 'px, 0)';
 
-    ItemsWrapper.style.webkitTransform = transform;
-    ItemsWrapper.style.MozTransform = transform;
-    ItemsWrapper.style.msTransform = transform;
-    ItemsWrapper.style.OTransform = transform;
-    ItemsWrapper.style.transform = transform;
+    itemsWrapper.style.webkitTransform = transform;
+    itemsWrapper.style.MozTransform = transform;
+    itemsWrapper.style.msTransform = transform;
+    itemsWrapper.style.OTransform = transform;
+    itemsWrapper.style.transform = transform;
   }
 
   function simulateInfiniteScroll (resetPage) {
     currentPage = resetPage;
     // disable animation
-    ItemsWrapper.style.transition = '';
+    itemsWrapper.style.transition = '';
     navigateToNextItem();
   }
 
@@ -43,7 +43,7 @@ window.jscarousel = function (targetCarousel, config) {
           }
 
           // enable animation
-          ItemsWrapper.style.transition = transition;
+          itemsWrapper.style.transition = transition;
 
           // navigate to next item
           navigateToNextItem();
@@ -72,11 +72,11 @@ window.jscarousel = function (targetCarousel, config) {
         (currentPage * containerWidth + (swipeStartXPosition - resolveMouseX(ev))) +
         'px, 0)';
 
-      ItemsWrapper.style.webkitTransform = translate;
-      ItemsWrapper.style.MozTransform = translate;
-      ItemsWrapper.style.msTransform = translate;
-      ItemsWrapper.style.OTransform = translate;
-      ItemsWrapper.style.transform = translate;
+      itemsWrapper.style.webkitTransform = translate;
+      itemsWrapper.style.MozTransform = translate;
+      itemsWrapper.style.msTransform = translate;
+      itemsWrapper.style.OTransform = translate;
+      itemsWrapper.style.transform = translate;
     }
   }
 
@@ -87,7 +87,7 @@ window.jscarousel = function (targetCarousel, config) {
       let shouldReset = false;
 
       // enable animation
-      ItemsWrapper.style.transition = transition;
+      itemsWrapper.style.transition = transition;
 
       if (Math.abs(resolveMouseX(ev) - swipeStartXPosition) >= config.swipeThreshold) {
         lastPage = currentPage;
@@ -126,11 +126,11 @@ window.jscarousel = function (targetCarousel, config) {
       }, config.animationSpeed + 10);
 
       // cleaning listeners after execution
-      ItemsWrapper.removeEventListener('mousemove', swipeMove);
-      ItemsWrapper.removeEventListener('mouseout', swipeEnd);
+      itemsWrapper.removeEventListener('mousemove', swipeMove);
+      itemsWrapper.removeEventListener('mouseout', swipeEnd);
 
-      ItemsWrapper.removeEventListener('touchmove', swipeMove);
-      ItemsWrapper.removeEventListener('touchend', swipeEnd);
+      itemsWrapper.removeEventListener('touchmove', swipeMove);
+      itemsWrapper.removeEventListener('touchend', swipeEnd);
     }
   }
 
@@ -141,15 +141,15 @@ window.jscarousel = function (targetCarousel, config) {
       swipeStartXPosition = resolveMouseX(ev);
 
       // disable animation
-      ItemsWrapper.style.transition = '';
+      itemsWrapper.style.transition = '';
 
       // mouse
-      addPassiveListener(ItemsWrapper, 'mousemove', swipeMove);
-      addPassiveListener(ItemsWrapper, 'mouseup', swipeEnd);
-      addPassiveListener(ItemsWrapper, 'mouseout', swipeEnd);
+      addPassiveListener(itemsWrapper, 'mousemove', swipeMove);
+      addPassiveListener(itemsWrapper, 'mouseup', swipeEnd);
+      addPassiveListener(itemsWrapper, 'mouseout', swipeEnd);
       // touch
-      addPassiveListener(ItemsWrapper, 'touchmove', swipeMove);
-      addPassiveListener(ItemsWrapper, 'touchend', swipeEnd);
+      addPassiveListener(itemsWrapper, 'touchmove', swipeMove);
+      addPassiveListener(itemsWrapper, 'touchend', swipeEnd);
     }
   }
 
@@ -195,7 +195,7 @@ window.jscarousel = function (targetCarousel, config) {
       paginationContainer.children[currentPage - 1].style.backgroundColor = '#4ecbf4';
 
       // enable animation
-      ItemsWrapper.style.transition = transition;
+      itemsWrapper.style.transition = transition;
 
       navigateToNextItem();
       isPlaying = false;
@@ -204,7 +204,7 @@ window.jscarousel = function (targetCarousel, config) {
   }
 
   const paginationContainer = document.createElement('div');
-  const ItemsWrapper = document.createElement('div');
+  const itemsWrapper = document.createElement('div');
   const transition = 'transform ' + config.animationSpeed + 'ms';
   // computation
   let lastPage = 0;
@@ -219,48 +219,61 @@ window.jscarousel = function (targetCarousel, config) {
   let hasBeenStopped = false;
 
   // apply styles to the elements
-  targetCarousel.style = 'white-space: nowrap; overflow: hidden; position: relative;';
-  paginationContainer.style =
-    'position: absolute; bottom: 20px; left: 50%; transform: translate(-50%, 0);';
-  ItemsWrapper.style = 'overflow: visible;';
+  targetCarousel.setAttribute(
+    'style',
+    'white-space: nowrap; overflow: hidden; position: relative;'
+  );
+  paginationContainer.setAttribute(
+    'style',
+    'position: absolute; bottom: 20px; left: 50%; transform: translate(-50%, 0);'
+  );
+  itemsWrapper.setAttribute('style', 'overflow: visible;');
 
   let maxLoop = targetCarousel.children.length;
 
   if (config.noClone) {
     maxPage -= 2;
     maxLoop -= 2;
-    targetCarousel.children[0].style =
-      'width: 100%; vertical-align: top; display: inline-block; white-space: pre-line;';
-    ItemsWrapper.appendChild(targetCarousel.children[0]);
+    targetCarousel.children[0].setAttribute(
+      'style',
+      'width: 100%; vertical-align: top; display: inline-block; white-space: pre-line;'
+    );
+    itemsWrapper.appendChild(targetCarousel.children[0]);
   }
 
   while (maxLoop) {
     maxLoop--;
-    targetCarousel.children[0].style =
-      'width: 100%; vertical-align: top; display: inline-block; white-space: pre-line;';
-    ItemsWrapper.appendChild(targetCarousel.children[0]);
+    targetCarousel.children[0].setAttribute(
+      'style',
+      'width: 100%; vertical-align: top; display: inline-block; white-space: pre-line;'
+    );
+    itemsWrapper.appendChild(targetCarousel.children[0]);
 
     // might as well create pagination elements now
-    const Page = document.createElement('div');
-    Page.style =
-      'display: inline-block; width: 7px; height: 7px; background-color: #1a84a8; border-radius: 50%; margin-right: 10px; cursor: pointer;';
-    Page.onclick = goToPage;
-    paginationContainer.appendChild(Page);
+    const page = document.createElement('div');
+    page.setAttribute(
+      'style',
+      'display: inline-block; width: 7px; height: 7px; background-color: #1a84a8; border-radius: 50%; margin-right: 10px; cursor: pointer;'
+    );
+    page.onclick = goToPage;
+    paginationContainer.appendChild(page);
   }
 
   if (!config.noClone) {
     // to be able to simulate an infinite scroll
-    ItemsWrapper.appendChild(ItemsWrapper.children[0].cloneNode(true));
-    ItemsWrapper.prepend(ItemsWrapper.children[maxPage - 1].cloneNode(true));
+    itemsWrapper.appendChild(itemsWrapper.children[0].cloneNode(true));
+    itemsWrapper.prepend(itemsWrapper.children[maxPage - 1].cloneNode(true));
   } else {
-    targetCarousel.children[0].style =
-      'width: 100%; vertical-align: top; display: inline-block; white-space: pre-line;';
-    ItemsWrapper.appendChild(targetCarousel.children[0]);
+    targetCarousel.children[0].setAttribute(
+      'style',
+      'width: 100%; vertical-align: top; display: inline-block; white-space: pre-line;'
+    );
+    itemsWrapper.appendChild(targetCarousel.children[0]);
   }
 
   // replace the container with the built carousel
   targetCarousel.innerHTML = '';
-  targetCarousel.appendChild(ItemsWrapper);
+  targetCarousel.appendChild(itemsWrapper);
   targetCarousel.appendChild(paginationContainer);
 
   // initially go to the first item
@@ -271,12 +284,12 @@ window.jscarousel = function (targetCarousel, config) {
   // add listeners
 
   // this is the only guy around that calls preventDefault
-  ItemsWrapper.addEventListener('dragstart', function (ev) {
+  itemsWrapper.addEventListener('dragstart', function (ev) {
     ev.preventDefault();
   });
 
-  addPassiveListener(ItemsWrapper, 'mousedown', swipeStart);
-  addPassiveListener(ItemsWrapper, 'touchstart', swipeStart);
+  addPassiveListener(itemsWrapper, 'mousedown', swipeStart);
+  addPassiveListener(itemsWrapper, 'touchstart', swipeStart);
 
   addPassiveListener(window, 'resize', function () {
     isPlaying = true;
